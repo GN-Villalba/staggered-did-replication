@@ -19,8 +19,8 @@ The data are fully simulated with a known true treatment effect (ATT = 0.12 sd),
 
 ```
 staggered-did-replication/
-├── 04_did_simulation.do          # DGP, OLS/IV, and CS event-study
-├── 05_estimators_comparison.do   # Five-estimator comparison and combined plot
+├── 01_did_simulation.do          # DGP, OLS/IV, and CS event-study
+├── 02_estimators_comparison.do   # Five-estimator comparison and combined plot
 └── data/                         # Created at runtime (gitignored)
 ```
 

@@ -1,6 +1,6 @@
 # staggered-did-replication
 
-Replication exercise comparing heterogeneity-robust difference-in-differences estimators under staggered treatment adoption, using simulated data.
+Replication exercise comparing heterogeneity-robust difference-in-differences estimators under staggered treatment adoption.
 
 **Gabriela Villalba** | PhD Candidate in Economics, University of Sussex
 `g.villalba-marecos@sussex.ac.uk`
@@ -9,40 +9,31 @@ Replication exercise comparing heterogeneity-robust difference-in-differences es
 
 ## Overview
 
-In staggered adoption designs — where units receive treatment at different points in time — the standard two-way fixed effects (TWFE) OLS estimator can be biased when treatment effects are heterogeneous across cohorts or time. This repository demonstrates the problem and implements four modern estimators that are robust to this issue.
+In staggered adoption designs — where units receive treatment at different points in time — the standard two-way fixed effects (TWFE) OLS estimator can be biased when treatment effects are heterogeneous across cohorts or time. This exercise implements and compares four modern estimators that are robust to this issue, alongside TWFE as a benchmark.
 
-The data are fully simulated with a known true treatment effect (ATT = 0.12 sd), which allows direct validation of each estimator's performance.
-
----
-
-## Repository structure
-
-```
-staggered-did-replication/
-├── 01_did_simulation.do          # DGP, OLS/IV, and CS event-study
-├── 02_estimators_comparison.do   # Five-estimator comparison and combined plot
-└── data/                         # Created at runtime (gitignored)
-```
+The empirical setting follows Callaway & Sant'Anna (2021): US counties observed 2001–2007, where treatment is the adoption of a state-level minimum wage increase above the federal floor and the outcome is log county-level teen employment. The dataset (`mpdta`) is publicly available and ships with the `csdid` Stata package.
 
 ---
 
-## Scripts
+## Script
 
-### `04_did_simulation.do`
+### `01_did_staggered_minimumwage.do`
 
-Generates a synthetic panel (200 units × 9 periods) with staggered treatment adoption. An eligibility rule at baseline serves as an instrument for treatment timing. Estimates OLS and IV specifications and runs a Callaway & Sant'Anna (2021) event-study with subgroup heterogeneity analysis.
+Loads the public dataset directly from GitHub, runs all five estimators, and produces individual and combined event-study plots.
 
-### `05_estimators_comparison.do`
+| Estimator | Method | Package |
+|---|---|---|
+| Borusyak, Jaravel & Spiess (2021) | Imputation | `did_imputation` |
+| de Chaisemartin & D'Haultfoeuille (2024) | First-difference | `did_multiplegt_dyn` |
+| Callaway & Sant'Anna (2021) | Group-time ATTs | `csdid` |
+| Sun & Abraham (2021) | Interaction-weighted | `eventstudyinteract` |
+| TWFE OLS (benchmark) | Two-way FE | `reghdfe` |
 
-Implements all five estimators on the same simulated dataset and plots them together using `event_plot` for direct comparison.
+---
 
-| Estimator | Package |
-|---|---|
-| Borusyak, Jaravel & Spiess (2021) | `did_imputation` |
-| de Chaisemartin & D'Haultfoeuille (2024) | `did_multiplegt_dyn` |
-| Callaway & Sant'Anna (2021) | `csdid` |
-| Sun & Abraham (2021) | `eventstudyinteract` |
-| TWFE OLS (benchmark) | `reghdfe` |
+## Reference
+
+Callaway, B. & Sant'Anna, P. (2021). Difference-in-differences with multiple time periods. *Journal of Econometrics*, 225(2), 200–230.
 
 ---
 
@@ -61,4 +52,4 @@ ssc install event_plot
 ssc install coefplot
 ```
 
-Run `04_did_simulation.do` first, then `05_estimators_comparison.do`.
+The dataset is loaded directly from GitHub — no manual download needed.
